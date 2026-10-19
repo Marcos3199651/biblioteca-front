@@ -1,0 +1,521 @@
+/* ==========================================================================
+   Estante – estilos
+   Tokens → base → componentes → estados → preferências do usuário
+   ========================================================================== */
+
+:root {
+  color-scheme: light dark;
+
+  /* Cores (tema claro) */
+  --fundo: #f2f4f6;
+  --superficie: #ffffff;
+  --tinta: #16202a;
+  --suave: #56636f;
+  --linha: #d5dbe1;
+  --primaria: #24476f;
+  --primaria-hover: #1b3a5c;
+  --sobre-primaria: #ffffff;
+  --perigo: #a12d2d;
+  --perigo-fundo: #fbeaea;
+  --foco: #1b6fd1;
+
+  /* Lombadas: uma cor por livro, escolhida pelo id */
+  --lombada-0: #24476f;
+  --lombada-1: #2f6b5e;
+  --lombada-2: #8a3b4f;
+  --lombada-3: #a8741a;
+  --lombada-4: #5a4a8c;
+  --lombada-5: #3f4b55;
+
+  /* Tipografia */
+  --fonte-titulo: "Literata", Georgia, "Times New Roman", serif;
+  --fonte-texto: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Escala (razão ~1.25) */
+  --t-1: 0.875rem;
+  --t0: 1rem;
+  --t1: 1.25rem;
+  --t2: 1.5625rem;
+  --t3: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
+
+  /* Espaçamento e forma */
+  --e1: 0.25rem;
+  --e2: 0.5rem;
+  --e3: 0.75rem;
+  --e4: 1rem;
+  --e5: 1.5rem;
+  --e6: 2.5rem;
+  --raio: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fundo: #11171d;
+    --superficie: #19222b;
+    --tinta: #e7ecf1;
+    --suave: #9aa8b5;
+    --linha: #2b3743;
+    --primaria: #8fb4e3;
+    --primaria-hover: #a9c6ec;
+    --sobre-primaria: #0e1a28;
+    --perigo: #f08a8a;
+    --perigo-fundo: #3a1f22;
+    --foco: #7db3ff;
+
+    --lombada-0: #5f8fc7;
+    --lombada-1: #4f9a88;
+    --lombada-2: #c06a80;
+    --lombada-3: #d29a3c;
+    --lombada-4: #8f7fc6;
+    --lombada-5: #7d8b97;
+  }
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--fundo);
+  color: var(--tinta);
+  font-family: var(--fonte-texto);
+  font-size: var(--t0);
+  line-height: 1.55;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--foco);
+  outline-offset: 2px;
+}
+
+main:focus {
+  outline: none;
+}
+
+.container {
+  width: min(100% - 2rem, 52rem);
+  margin-inline: auto;
+}
+
+.pular {
+  position: absolute;
+  inset-block-start: var(--e2);
+  inset-inline-start: var(--e2);
+  padding: var(--e2) var(--e4);
+  background: var(--primaria);
+  color: var(--sobre-primaria);
+  border-radius: var(--raio);
+  transform: translateY(-200%);
+  z-index: 100;
+}
+
+.pular:focus {
+  transform: none;
+}
+
+/* ---------- Topo ---------- */
+
+.topo {
+  padding-block: var(--e6) var(--e5);
+}
+
+.topo__miolo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--e4);
+}
+
+.topo__titulo {
+  font-family: var(--fonte-titulo);
+  font-size: var(--t3);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.topo__texto {
+  margin-block-start: var(--e2);
+  color: var(--suave);
+  max-width: 40ch;
+}
+
+/* ---------- Botões ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0 var(--e4);
+  border: 1px solid transparent;
+  border-radius: var(--raio);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.btn--pequeno {
+  min-height: 2.5rem;
+  padding: 0 var(--e3);
+  font-size: var(--t-1);
+}
+
+.btn--primario {
+  background: var(--primaria);
+  color: var(--sobre-primaria);
+}
+
+.btn--primario:hover:not(:disabled) {
+  background: var(--primaria-hover);
+}
+
+.btn--neutro {
+  background: transparent;
+  border-color: var(--linha);
+}
+
+.btn--neutro:hover:not(:disabled) {
+  border-color: var(--suave);
+}
+
+.btn--perigo {
+  background: var(--perigo);
+  color: var(--superficie);
+}
+
+.btn--perigo:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+
+.btn--perigo-suave {
+  background: transparent;
+  border-color: var(--linha);
+  color: var(--perigo);
+}
+
+.btn--perigo-suave:hover:not(:disabled) {
+  background: var(--perigo-fundo);
+  border-color: var(--perigo);
+}
+
+/* ---------- Campos ---------- */
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--e1);
+}
+
+.campo__rotulo {
+  font-size: var(--t-1);
+  font-weight: 600;
+}
+
+.entrada {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0 var(--e3);
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+}
+
+.entrada:hover {
+  border-color: var(--suave);
+}
+
+.entrada[aria-invalid="true"] {
+  border-color: var(--perigo);
+}
+
+.campo__erro {
+  color: var(--perigo);
+  font-size: var(--t-1);
+}
+
+.campo--curto {
+  max-width: 14rem;
+}
+
+.alerta {
+  padding: var(--e3) var(--e4);
+  background: var(--perigo-fundo);
+  border-left: 4px solid var(--perigo);
+  border-radius: var(--raio);
+  font-size: var(--t-1);
+}
+
+.aviso {
+  padding: var(--e4);
+  background: var(--perigo-fundo);
+  border-radius: var(--raio);
+}
+
+/* ---------- Busca e ordenação ---------- */
+
+.ferramentas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--e3);
+}
+
+@media (min-width: 40rem) {
+  .ferramentas {
+    grid-template-columns: 1fr 15rem;
+    gap: var(--e4);
+  }
+}
+
+.contagem {
+  margin-block: var(--e4) var(--e3);
+  min-height: 1.55em;
+  color: var(--suave);
+  font-size: var(--t-1);
+}
+
+/* ---------- Lista de livros ---------- */
+
+.lista {
+  display: grid;
+  gap: var(--e3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.livro {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--e4);
+  padding: var(--e4);
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+}
+
+.livro__lombada {
+  width: 0.875rem;
+  min-height: 4.5rem;
+  align-self: stretch;
+  border-radius: 0.2rem;
+  background: var(--lombada, var(--lombada-0));
+  box-shadow:
+    inset 0 0.45rem 0 rgb(255 255 255 / 0.22),
+    inset 0 -0.45rem 0 rgb(0 0 0 / 0.18);
+}
+
+.livro__titulo {
+  font-family: var(--fonte-titulo);
+  font-size: var(--t1);
+  font-weight: 700;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.livro__autor {
+  margin-block-start: var(--e1);
+  overflow-wrap: anywhere;
+}
+
+.livro__ano {
+  color: var(--suave);
+  font-size: var(--t-1);
+}
+
+.livro__acoes {
+  grid-column: 2;
+  display: flex;
+  gap: var(--e2);
+}
+
+@media (min-width: 40rem) {
+  .livro {
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+  }
+
+  .livro__acoes {
+    grid-column: auto;
+  }
+}
+
+/* Carregamento */
+.livro--esqueleto {
+  min-height: 6.5rem;
+  background: linear-gradient(90deg, var(--superficie) 0%, var(--linha) 50%, var(--superficie) 100%);
+  background-size: 200% 100%;
+  animation: brilho 1.4s ease-in-out infinite;
+}
+
+@keyframes brilho {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* ---------- Estados vazio/erro ---------- */
+
+.estado {
+  display: grid;
+  justify-items: start;
+  gap: var(--e3);
+  padding: var(--e5);
+  background: var(--superficie);
+  border: 1px dashed var(--suave);
+  border-radius: var(--raio);
+}
+
+.estado--erro {
+  border-style: solid;
+  border-color: var(--perigo);
+}
+
+.estado__titulo {
+  font-family: var(--fonte-titulo);
+  font-size: var(--t2);
+  line-height: 1.2;
+}
+
+.estado__texto {
+  max-width: 60ch;
+  color: var(--suave);
+}
+
+/* ---------- Diálogos ---------- */
+
+.dialogo {
+  width: min(100% - 2rem, 32rem);
+  padding: 0;
+  background: var(--superficie);
+  color: var(--tinta);
+  border: 1px solid var(--linha);
+  border-radius: var(--raio);
+}
+
+.dialogo--estreito {
+  width: min(100% - 2rem, 26rem);
+}
+
+.dialogo::backdrop {
+  background: rgb(10 16 22 / 0.6);
+}
+
+.dialogo[open] {
+  animation: abrir 0.18s ease-out;
+}
+
+@keyframes abrir {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+.dialogo__corpo {
+  display: grid;
+  gap: var(--e4);
+  padding: var(--e5);
+}
+
+.dialogo__titulo {
+  font-family: var(--fonte-titulo);
+  font-size: var(--t2);
+  line-height: 1.2;
+}
+
+.dialogo__texto {
+  overflow-wrap: anywhere;
+}
+
+.dialogo__acoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--e2);
+  margin-block-start: var(--e2);
+}
+
+/* ---------- Avisos temporários (toasts) ---------- */
+
+.avisos {
+  position: fixed;
+  inset-inline: var(--e4);
+  inset-block-end: var(--e4);
+  display: grid;
+  justify-items: center;
+  gap: var(--e2);
+  pointer-events: none;
+  z-index: 200;
+}
+
+.aviso-toast {
+  max-width: 28rem;
+  padding: var(--e3) var(--e4);
+  background: var(--tinta);
+  color: var(--fundo);
+  border-radius: var(--raio);
+  font-size: var(--t-1);
+  font-weight: 500;
+  animation: abrir 0.18s ease-out;
+}
+
+.aviso-toast--erro {
+  background: var(--perigo);
+  color: var(--superficie);
+}
+
+/* ---------- Utilitários ---------- */
+
+main {
+  padding-block-end: 6rem;
+}
+
+/* ---------- Movimento reduzido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

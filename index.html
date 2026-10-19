@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estante – acervo de livros</title>
+  <meta name="description" content="Cadastre, edite, busque e exclua os livros do acervo.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#24476F">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Public+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/css/styles.css">
+  <script type="module" src="/js/app.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Ir para a lista de livros</a>
+
+  <header class="topo">
+    <div class="container topo__miolo">
+      <div>
+        <h1 class="topo__titulo">Estante</h1>
+        <p class="topo__texto">Cadastre, edite e consulte os livros do acervo.</p>
+      </div>
+      <button type="button" class="btn btn--primario" id="btn-novo">Novo livro</button>
+    </div>
+  </header>
+
+  <main id="conteudo" class="container" tabindex="-1">
+    <noscript>
+      <p class="aviso">Esta página precisa de JavaScript para funcionar. Ative o JavaScript no navegador e recarregue.</p>
+    </noscript>
+
+    <form class="ferramentas" role="search" id="form-busca" aria-label="Buscar e ordenar livros">
+      <div class="campo campo--busca">
+        <label for="busca" class="campo__rotulo">Buscar livro</label>
+        <input id="busca" name="busca" type="search" class="entrada" placeholder="Título, autor ou ano" autocomplete="off">
+      </div>
+      <div class="campo campo--ordem">
+        <label for="ordem" class="campo__rotulo">Ordenar por</label>
+        <select id="ordem" name="ordem" class="entrada">
+          <option value="titulo">Título (A–Z)</option>
+          <option value="autor">Autor (A–Z)</option>
+          <option value="ano">Ano (mais recente)</option>
+          <option value="recentes">Cadastrados por último</option>
+        </select>
+      </div>
+    </form>
+
+    <p id="contagem" class="contagem" role="status" aria-live="polite"></p>
+
+    <ul id="lista" class="lista" aria-label="Livros do acervo"></ul>
+
+    <section id="vazio" class="estado" hidden>
+      <h2 class="estado__titulo" id="vazio-titulo"></h2>
+      <p class="estado__texto" id="vazio-texto"></p>
+      <button type="button" class="btn btn--primario" id="vazio-acao"></button>
+    </section>
+
+    <section id="erro" class="estado estado--erro" role="alert" hidden>
+      <h2 class="estado__titulo">Não foi possível carregar os livros</h2>
+      <p class="estado__texto" id="erro-msg"></p>
+      <button type="button" class="btn btn--primario" id="btn-tentar">Tentar de novo</button>
+    </section>
+  </main>
+
+  <!-- Formulário de cadastro/edição -->
+  <dialog id="dlg-form" class="dialogo" aria-labelledby="dlg-form-titulo">
+    <form id="form-livro" class="dialogo__corpo" novalidate>
+      <h2 id="dlg-form-titulo" class="dialogo__titulo">Novo livro</h2>
+
+      <p id="form-erro" class="alerta" role="alert" hidden></p>
+
+      <div class="campo">
+        <label for="f-titulo" class="campo__rotulo">Título</label>
+        <input id="f-titulo" name="titulo" type="text" class="entrada" maxlength="200" required autocomplete="off" aria-describedby="e-titulo">
+        <p id="e-titulo" class="campo__erro" hidden></p>
+      </div>
+
+      <div class="campo">
+        <label for="f-autor" class="campo__rotulo">Autor</label>
+        <input id="f-autor" name="autor" type="text" class="entrada" maxlength="200" required autocomplete="off" aria-describedby="e-autor">
+        <p id="e-autor" class="campo__erro" hidden></p>
+      </div>
+
+      <div class="campo campo--curto">
+        <label for="f-ano" class="campo__rotulo">Ano de publicação (opcional)</label>
+        <input id="f-ano" name="ano" type="number" inputmode="numeric" class="entrada" min="1" step="1" autocomplete="off" aria-describedby="e-ano">
+        <p id="e-ano" class="campo__erro" hidden></p>
+      </div>
+
+      <div class="dialogo__acoes">
+        <button type="button" class="btn btn--neutro" data-fechar>Cancelar</button>
+        <button type="submit" class="btn btn--primario" id="btn-salvar">Cadastrar livro</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Confirmação de exclusão -->
+  <dialog id="dlg-excluir" class="dialogo dialogo--estreito" aria-labelledby="dlg-excluir-titulo" aria-describedby="dlg-excluir-texto">
+    <div class="dialogo__corpo">
+      <h2 id="dlg-excluir-titulo" class="dialogo__titulo">Excluir livro?</h2>
+      <p id="dlg-excluir-texto" class="dialogo__texto"></p>
+      <div class="dialogo__acoes">
+        <button type="button" class="btn btn--neutro" data-fechar>Cancelar</button>
+        <button type="button" class="btn btn--perigo" id="btn-confirmar-excluir">Excluir livro</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="avisos" class="avisos" aria-live="polite" aria-atomic="false"></div>
+
+  <template id="modelo-livro">
+    <li class="livro">
+      <div class="livro__lombada" aria-hidden="true"></div>
+      <div class="livro__corpo">
+        <h2 class="livro__titulo"></h2>
+        <p class="livro__autor"></p>
+        <p class="livro__ano"></p>
+      </div>
+      <div class="livro__acoes">
+        <button type="button" class="btn btn--neutro btn--pequeno" data-acao="editar">Editar</button>
+        <button type="button" class="btn btn--perigo-suave btn--pequeno" data-acao="excluir">Excluir</button>
+      </div>
+    </li>
+  </template>
+</body>
+</html>
